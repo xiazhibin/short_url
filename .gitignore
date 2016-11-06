@@ -1,3 +1,5 @@
 *.idea/
 *.python-version
-
+*.pyc
+test.py
+instance/
