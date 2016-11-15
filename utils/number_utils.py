@@ -7,21 +7,42 @@ NUMBER_ARR = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', '
 
 
 def _10_to_62(number):
-    if number == 0:
-        return 0
-    rest = number
-    res = []
-    while rest != 0:
-        shang, mod = divmod(rest, 62)
-        res.append(NUMBER_ARR[mod])
-        rest = shang
-    res.reverse()
-    return ''.join(res)
+    return ten_to_weight(number, 62, NUMBER_ARR)
 
 
 def _62_to_10(number):
+    return weight_to_ten(number, 62, NUMBER_ARR)
+
+
+def weight_to_ten(number, weight, mapping_table=None):
     res = 0
     length = len(number)
-    for i in range(length):
-        res += NUMBER_ARR.index(number[i]) * pow(62, length - i - 1)
+    if mapping_table:
+        for i in range(length):
+            res += mapping_table.index(number[i]) * pow(weight, length - i - 1)
+    else:
+        for i in range(length):
+            res += int(number[i]) * pow(weight, length - i - 1)
     return long(res)
+
+
+def ten_to_weight(number, weight, mapping_table=None):
+    if number == 0:
+        return 0
+    rest = int(number)
+    res = []
+    if mapping_table:
+        while rest != 0:
+            shang, mod = divmod(rest, weight)
+            res.insert(0, NUMBER_ARR[mod])
+            rest = shang
+    else:
+        while rest != 0:
+            shang, mod = divmod(rest, weight)
+            res.insert(0, str(mod))
+            rest = shang
+    return ''.join(res)
+
+
+if __name__ == '__main__':
+    print _10_to_62('10')
