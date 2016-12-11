@@ -3,4 +3,4 @@ SECRET_KEY = 'SECRET_KEY'
 
 REDIS_URL = "redis://localhost:6379/db/1"
 EXPIRE_TIME_DELTA = 3600
-YOUR_HOST = '127.0.0.1:5000'
+YOUR_HOST = 'http://myweb.cn:8080'

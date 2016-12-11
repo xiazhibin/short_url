@@ -1,5 +1,5 @@
 from short_url import redis_store
-from utils.number_utils import _10_to_62
+from short_url.utils.number_utils import _10_to_62
 
 REDIS_KEY = 'NUMBER_SENDER'
 

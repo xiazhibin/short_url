@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Short Url</title>
+</head>
+<body>
+    <script type="text/javascript">
+            var req = new XMLHttpRequest();
+
+            function on_enter(){
+                var obj = document.getElementById("txtname");
+                get_rv(obj.value)
+            }
+
+            function get_rv(long_url){
+                req.onreadystatechange=function()
+                  {
+                    if (req.readyState==4 && req.status==200)
+                    {
+                            var rv = req.responseText
+                            js = JSON.parse(rv)
+                            alias_url = document.getElementById("alias_url")
+                            alias_url.value = js.data
+                    }
+                  }
+                url = "http://myweb.cn:8080/short_url/"
+                req.open("POST",url,true);
+                req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                req.send("url="+long_url)
+            }
+
+            function clear_input(){
+                var txt = document.getElementById("txtname");
+                txt.value = ''
+            }
+    </script>
+    <div>
+        <input type="text" value="长网址" id="txtname", onclick="clear_input()" style="width:360px;">
+    </div>
+	<button type="button" onclick="on_enter()" id='btn'>缩短</button>
+    <div><input type="text" name="alias_url" id="alias_url" style="width:240px;" ></div>
+
+</body>
+</html>
