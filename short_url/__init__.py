@@ -1,5 +1,5 @@
+from flask import Flask
 from flask_redis import FlaskRedis
-from flask import Flask, request, redirect, Blueprint
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('config')

@@ -7,7 +7,7 @@ from short_url import redis_store, app
 from short_url.number_sender import get_number
 from short_url.utils.decorators import crossdomain
 
-mod = Blueprint('short_url', __name__, url_prefix='/short_url')
+mod = Blueprint('short_url', __name__, url_prefix='/s')
 EXPIRE_TIME_DELTA = app.config['EXPIRE_TIME_DELTA']
 HOST = app.config['YOUR_HOST']
 
@@ -27,7 +27,10 @@ def shorten():
     expire_time = datetime.now() + timedelta(seconds=EXPIRE_TIME_DELTA)
     redis_store.expireat(url, expire_time)
 
-    rv = '{0}{1}/{2}'.format(HOST, mod.url_prefix, short_url)
+    if mod.url_prefix:
+        rv = '{0}{1}/{2}'.format(HOST, mod.url_prefix, short_url)
+    else:
+        rv = '{0}/{1}'.format(HOST, short_url)
     return jsonify({'data': rv})
 
 
