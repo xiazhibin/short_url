@@ -16,16 +16,17 @@ HOST = app.config['YOUR_HOST']
 @crossdomain('*')
 def shorten():
     url = request.form.get('url')
-    if not pre_check(url):
-        return jsonify({'data': "url is not accessable"})
-
     short_url = redis_store.get(url)
     if short_url is None:
         short_url = get_number()
         redis_store.set(short_url, url)
         redis_store.set(url, short_url)
-    expire_time = datetime.now() + timedelta(seconds=EXPIRE_TIME_DELTA)
-    redis_store.expireat(url, expire_time)
+        if not pre_check(url):
+            return jsonify({'data': "url is not accessable"})
+
+    else:
+        expire_time = datetime.now() + timedelta(seconds=EXPIRE_TIME_DELTA)
+        redis_store.expireat(url, expire_time)
 
     if mod.url_prefix:
         rv = '{0}{1}/{2}'.format(HOST, mod.url_prefix, short_url)
@@ -53,7 +54,7 @@ headers = {
 def pre_check(url):
     rv = False
     try:
-        response = requests.get(url, headers=headers, timeout=3)
+        response = requests.get(url, headers=headers, timeout=1)
         if response.status_code == 200:
             rv = True
     except Exception as e:
