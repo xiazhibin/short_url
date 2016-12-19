@@ -1,3 +1,4 @@
 flask-redis
 flask
 requests
+fabric

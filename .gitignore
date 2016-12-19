@@ -3,3 +3,4 @@
 *.pyc
 test.py
 instance/
+.DS_Store
